@@ -15,10 +15,11 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
 
 func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = self.dailyWeatherTableView.dequeueReusableCell(withIdentifier: "DailyWeatherTableCell", for: indexPath) as UITableViewCell
+    print("Data Reloaded 6")
     if let customCell = cell as? DailyWeatherTableCell
     {
         customCell.dayDateAndMonthLabel.text = dailyWeatherData[indexPath.item].getWeekDay()
-        customCell.min_MaxTempLabel.text = "\(dailyWeatherData[indexPath.item].getLowTemp()),'\', \(dailyWeatherData[indexPath.item].getHighTemp()))"
+        customCell.min_MaxTempLabel.text = "\(dailyWeatherData[indexPath.item].getLowTemp())\u{00B0}/ \(dailyWeatherData[indexPath.item].getHighTemp())\u{00B0}"
         customCell.weatherImageView.image = dailyWeatherData[indexPath.item].getIcon()
          customCell.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
     }

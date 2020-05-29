@@ -15,6 +15,10 @@ class simpleCurrentDetailTableCell: UITableViewCell {
         // Initialization code
     }
 
+    @IBOutlet weak var title2nd: UILabel!
+    @IBOutlet weak var title1st: UILabel!
+    @IBOutlet weak var description1st: UILabel!
+    @IBOutlet weak var description2nd: UILabel!
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

@@ -14,7 +14,10 @@ class DailyWeatherTableCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    @IBOutlet weak var dayDateAndMonthLabel: UILabel!
+    
+    @IBOutlet weak var weatherImageView: UIImageView!
+    @IBOutlet weak var min_MaxTempLabel: UILabel!
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

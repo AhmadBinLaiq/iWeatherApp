@@ -9,5 +9,10 @@
 import UIKit
 
 class HourlyWeatherDetailCollectionCell: UICollectionViewCell {
+    @IBOutlet weak var tempLabel: UILabel!
     
+    @IBOutlet weak var weatherIconImageView: UIImageView!
+    @IBOutlet weak var timeLabel: UILabel!
+    
+   
 }

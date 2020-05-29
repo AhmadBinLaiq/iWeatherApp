@@ -13,6 +13,9 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("Entered Forward")
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

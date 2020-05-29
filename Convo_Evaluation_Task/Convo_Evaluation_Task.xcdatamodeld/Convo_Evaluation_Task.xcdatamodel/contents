@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E266" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CurrentWeather" representedClassName="CurrentWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="city" optional="YES" attributeType="String"/>
+        <attribute name="degree" optional="YES" attributeType="String"/>
+        <attribute name="feelsLike" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fetchTime" optional="YES" attributeType="String"/>
+        <attribute name="highTemp" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="humidity" optional="YES" attributeType="String"/>
+        <attribute name="lowTemp" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="pressure" optional="YES" attributeType="String"/>
+        <attribute name="sunRiseTime" optional="YES" attributeType="String"/>
+        <attribute name="sunSetTime" optional="YES" attributeType="String"/>
+        <attribute name="temperature" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="weatherStatus" optional="YES" attributeType="String"/>
+        <attribute name="weekDay" optional="YES" attributeType="String"/>
+        <attribute name="wind" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="DailyWeather" representedClassName="DailyWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="consistancyIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dailyWeatherIcon" optional="YES" attributeType="Binary"/>
+        <attribute name="highTemp" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="iconName" optional="YES" attributeType="String"/>
+        <attribute name="lowTemp" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="weekday" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="HourlyWeather" representedClassName="HourlyWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="consistancyIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="hourWeatherIcon" optional="YES" attributeType="Binary"/>
+        <attribute name="iconName" optional="YES" attributeType="String"/>
+        <attribute name="temperature" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="CurrentWeather" positionX="158.84375" positionY="35.51171875" width="128" height="253"/>
+        <element name="DailyWeather" positionX="-63" positionY="-18" width="128" height="133"/>
+        <element name="HourlyWeather" positionX="355.5859375" positionY="53.09765625" width="128" height="118"/>
+    </elements>
 </model>
