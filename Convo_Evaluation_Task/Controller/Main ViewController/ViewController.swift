@@ -22,7 +22,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var latitude: Double = 0.0 //
     var longitude: Double = 0.0
     var weatherModel = WeatherModel()
-    let progressHUD = ProgressHUD(text: "Fetching Data")
+    let progressHUD = ProgressHUD(text: "")
+    var lastUpdatedLabel = UILabel()
+    let vibrancyView =  UIVisualEffectView()
     var collectionViewDataSource = rootCollectionViewDataSource() /* data source class for root collection view */
     var collectionViewDelegate = rootCollectionViewDelegate() /* delegate class for root collection view */
     var currentLocalTime : (Int, Int) = (0,0) /* for saving the time user lauched the application */
@@ -37,161 +39,172 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //    }
     
     
-    /* tells if the data should be refreshed or not, a minimum of 30 mins are limit to refresh the data */
-    static func shouldUpdateData(localTime: (hour: Int,min: Int), refreshTime: (hour: Int,min: Int)) -> Bool {
-        return (refreshTime.hour - localTime.hour) >= 1 || (refreshTime.min - localTime.min) >= 30
+//    /* tells if the data should be refreshed or not, a minimum of 30 mins are limit to refresh the data */
+//    static func shouldUpdateData(localTime: (hour: Int,min: Int), refreshTime: (hour: Int,min: Int)) -> Bool {
+//        return (refreshTime.hour - localTime.hour) >= 1 || (refreshTime.min - localTime.min) >= 30
+//    }
+    
+//    /*   returns the current time in hr:min from when called */
+//    func getLocalTime() -> (Int,Int){
+//        let date = NSDate()
+//        let calender = NSCalendar.current
+//        let components = calender.dateComponents([.hour, .minute], from: date as Date)
+//        return (components.hour!,components.minute!)
+//        
+//    }
+    
+     /*  some code that app required offenly so made a func for it */
+    func utilityFunction(reloadData: Bool) {
+        self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
+        self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
+        self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
+        if reloadData {
+            self.rootWeatherCollectionView.reloadData()
+        }
+        self.lastUpdatedLabel.text = "Updated at: \(self.weatherModel.getLastUpdatedDataTime())"
     }
     
-    /*   returns the current time in hr:min from when callde */
-    func getLocalTime() -> (Int,Int){
-        let date = NSDate()
-        let calender = NSCalendar.current
-        let components = calender.dateComponents([.hour, .minute], from: date as Date)
-        return (components.hour!,components.minute!)
-        
-    }
     
-    func utilityFunction() {
-        
-    }
     
-    /* function all when collectionView Pulled down */
+    /* function call when collectionView Pulled down */
     @objc func pulledDownFuncCalled(refreshControl: UIRefreshControl){
-        print("Last updated:  ",weatherModel.getCurrentWeatherData().getLastUpdated())
-        print("Time 2:: ", self.getLocalTime())
-        print(" !========================================== Refreshed ==========================================!")
-        print("Going IN 1")
-        if WeatherModel.shouldUpdateData(localTime: self.weatherModel.getFetchedTime(), refreshTime: self.getLocalTime())
+        self.progressHUD.show()
+         /*   app will not fetch data if it already fetched data 20 mins ago */
+        if weatherModel.shouldUpdateData(localTime: self.weatherModel.getLocalTime(), refreshTime: self.weatherModel.getFetchedTime())
         {
-            print("Updatinggggggggggg------------------------------")
-            self.fetchDataFromModel(refreshBool: true)
+            self.progressHUD.show()
+            self.fetchDataFromModel(refreshBool: false){sucess in
+                if sucess {
+                    self.progressHUD.hide()
+                }
+            }
         }
         else {
-            print("did not Updatinggggggggggg------------------------------")
-            self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
-            self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
-            self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
-            self.rootWeatherCollectionView.reloadData()
-            refreshControl.endRefreshing()
+            utilityFunction(reloadData: true)
         }
-        print("im out 3")
-        print("Job done 4")
+//         self.progressHUD.hide()
+        refreshControl.endRefreshing()
     }
     
     /* function that fetched data through model class  */
-    func fetchDataFromModel(refreshBool: Bool, completeonClosure:  ((Bool) -> ())? = nil){
-        //        if refreshBool{
-        //
-        //        }
-        //        else {
-        //
-        //        }
-        
+    func fetchDataFromModel(refreshBool: Bool, completeonClosure: @escaping (Bool) -> ())
+    {
+        self.progressHUD.show()
         if self.checkInternetConnection() == 2 || self.checkInternetConnection() == 3
         {
-            
-            print("staying IN 2 ")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2)
             {
-                
                 self.weatherModel.DeleteAllDataFromDb()
-                print("Internet Connected")
-                print("staying IN 2a ")
-                //            }
                 DispatchQueue.background(delay: 2 ,background:
                     {
                         self.weatherModel.fetchDataFromWeatherAPI()
                             {
-                                ifSucess in
-                                if ifSucess
+                                sucess in
+                                if sucess
                                 {
-                                    print("ahahhahhahahahhahahahahah--------------------------------------------")
-                                    
-                                    self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
-                                    self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
-                                    self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
-                                    
+                                    self.utilityFunction(reloadData: true)
                                     self.weatherModel.saveDateInDb()
-                                    self.rootWeatherCollectionView.reloadData()
-                                    self.rootWeatherCollectionView.refreshControl!.endRefreshing()
-                                    completeonClosure!(ifSucess)
+                                    completeonClosure(sucess)
                                 }
                         }
-                        
-                        print("leaving 2a(1)")
                 }
-                 )
-                
+                )
             }
+             /*   display data from database untill new data is fetched, which is being fetched in background thread*/
             if !refreshBool
             {
                 self.weatherModel.retriveDataFromDb()
-                self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
-                self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
-                self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
-                self.rootWeatherCollectionView.reloadData()
-                self.rootWeatherCollectionView.refreshControl!.endRefreshing()
+                utilityFunction(reloadData: true)
+                completeonClosure(false)
             }
-            //
-        }
-            
-        else
+        }else
         {
-            print("staying IN 2b ")
-            print("Internet Not Connected") // fetched time should be updated according to current - time in database!
+            self.progressHUD.hide()
             self.weatherModel.retriveDataFromDb()
-            self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
-            self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
-            self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
-            self.rootWeatherCollectionView.refreshControl!.endRefreshing()
+            utilityFunction(reloadData: false)
+            completeonClosure(false)
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.rootWeatherCollectionView.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
-        self.weatherModel = WeatherModel()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.weatherModel.context = appDelegate.persistentContainer.viewContext
+    
+    /* for adding a location managerIcon along with its target function  */
+    func addLocationManagerIcon(){
         let locationIcon = UIImageView(frame: CGRect(x: self.view.frame.minX + 15 , y: self.view.frame.minY  + 60 , width: self.view.frame.width / 13 , height: self.view.frame.width / 11 ))
         locationIcon.image = UIImage(named: "location")
         self.view.addSubview(locationIcon)
+    }
+    
+    /* for adding a green check when data is fetched initially */
+    func addGreenCheck(){
+        let imageView = UIImageView(frame: CGRect(x: self.progressHUD.frame.minX + 2, y: self.progressHUD.frame.minY + 7, width: self.progressHUD.frame.width / 1.5 , height: self.progressHUD.frame.width / 1.5))
+        imageView.image = UIImage(named: "greenCheck")
+        self.view.addSubview(imageView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+        {
+            imageView.removeFromSuperview()
+        }
+    }
+    
+    /* for adding a UIView at the top */
+    func addUIView(){
+        let uiview = UIView(frame: CGRect(x: self.view.frame.minX, y: self.view.frame.minY + 40 , width: self.view.frame.width, height: self.view.frame.width / 6 ))
+        uiview.backgroundColor = #colorLiteral(red: 0.3640545684, green: 0.2428080664, blue: 0.3289214868, alpha: 1)
+        self.view.addSubview(uiview)
+    }
+    
+    /* for adding a ui label for last refreshed */
+    func addLastRefreshed()
+    {
+        lastUpdatedLabel = UILabel(frame: CGRect(x: self.view.frame.maxX - ((self.view.frame.width / 3.45)) , y: self.view.frame.minY + 65 , width: (self.view.frame.width / 3) + 3 , height: self.view.frame.width / 11 ))
+        lastUpdatedLabel.text = "Updated at: \(weatherModel.getLastUpdatedDataTime())"
+        lastUpdatedLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        lastUpdatedLabel.font = lastUpdatedLabel.font.withSize(14)
+        self.view.addSubview(lastUpdatedLabel)
+    }
+    
+    /* for adding a refresh control  */
+    func addRefreshControl(){
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(pulledDownFuncCalled), for: .valueChanged)
         self.rootWeatherCollectionView.refreshControl = refreshControl
-        
-        
         self.view.addSubview(progressHUD)
-        self.progressHUD.show()
-        
-        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.rootWeatherCollectionView.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
+        DispatchQueue.main.async {
+            self.rootWeatherCollectionView.collectionViewLayout.invalidateLayout()
+        }
+        self.weatherModel = WeatherModel()
         self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
-        self.currentLocalTime = getLocalTime()
+        self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
+        self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.weatherModel.context = appDelegate.persistentContainer.viewContext
+        self.addUIView()
+        self.addLocationManagerIcon()
+        self.addLastRefreshed()
+        self.addRefreshControl()
+        self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
         self.fetchDataFromModel(refreshBool: false){
             Sucess in
             if Sucess{
                 self.progressHUD.hide()
-                let imageView = UIImageView(frame: CGRect(x: self.progressHUD.frame.minX, y: self.progressHUD.frame.minY, width: self.progressHUD.frame.width / 2 , height: self.progressHUD.frame.width / 2))
-                imageView.image = UIImage(named: "greenCheck")
-                self.view.addSubview(imageView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                {
-                    imageView.removeFromSuperview()
-                }
-                
+                self.addGreenCheck()
+            }
+            else {
+                self.utilityFunction(reloadData: false)
             }
         }
-        print("Im back 5")
         self.locationManager = CLLocationManager()
         self.userLocation = CLLocation()
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        if CLLocationManager.locationServicesEnabled() == false {
+        if CLLocationManager.locationServicesEnabled() == false
+        {
             print("No permissions!")
             self.locationManager.requestAlwaysAuthorization()
-            
         }
-        
     }
     
     /* function to check internet connectivity  */
@@ -224,7 +237,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if distance > 100 {
             userLocation = newLocation
         }
-        
         print("user latitude = \(userLocation.coordinate.latitude)")
         print("user longitude = \(userLocation.coordinate.longitude)")
     }
@@ -234,7 +246,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     /* function to function for enable User location  */
     func enableLocationPermission()
     {
-        
         let locStatus = CLLocationManager.authorizationStatus()
         switch locStatus {
         case .notDetermined:
@@ -257,8 +268,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
 
 /* an extension to for background Process  */
-extension DispatchQueue {
-
+extension DispatchQueue
+{
     static func background(delay: Double = 0.0, background: (()->Void)? = nil, completion: (() -> Void)? = nil) {
         DispatchQueue.global(qos: .background).async {
             background?()
@@ -269,7 +280,7 @@ extension DispatchQueue {
             }
         }
     }
-
+    
 }
 extension UINavigationController {
     

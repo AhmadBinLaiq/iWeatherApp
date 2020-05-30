@@ -11,21 +11,18 @@ import UIKit
 class HourlyWeatherDetailTableCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Total cells in hour::",hourlyWeatherData.count)
         return hourlyWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = self.hourlyWeatherCollectionView.dequeueReusableCell(withReuseIdentifier: "HourlyWeatherDetailCollectionCell", for: indexPath) as UICollectionViewCell
-        print("Data Reloaded 5")
+        print("Data Reloaded 4a")
                    if let customCell = cell as? HourlyWeatherDetailCollectionCell
                    {
                     customCell.tempLabel.text = String(hourlyWeatherData[indexPath.item].getTemp())+"\u{00B0}"
                     customCell.timeLabel.text = hourlyWeatherData[indexPath.item].getTime()
                     customCell.weatherIconImageView.image = hourlyWeatherData[indexPath.item].getIcon()
-                    customCell.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
-
-                       
+                    customCell.backgroundColor = #colorLiteral(red: 0.5762809327, green: 0.3830275923, blue: 0.5050187108, alpha: 0.78)
                    }
         return cell
     }
@@ -48,14 +45,8 @@ class HourlyWeatherDetailTableCell: UITableViewCell, UICollectionViewDataSource,
         return 1.0
     }
 
-   
-    
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-//        hourlyWeatherCollectionView.dataSource = self
-//        hourlyWeatherCollectionView.delegate = self
         
     }
     @IBOutlet weak var hourlyWeatherCollectionView: UICollectionView!

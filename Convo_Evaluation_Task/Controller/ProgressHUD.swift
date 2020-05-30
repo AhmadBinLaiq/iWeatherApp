@@ -20,7 +20,7 @@ class ProgressHUD: UIVisualEffectView {
 
     let activityIndictor: UIActivityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
 //        let label: UILabel = UILabel()
-    let blurEffect = UIBlurEffect(style: .prominent)
+    let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyView: UIVisualEffectView
 
         init(text: String) {
@@ -40,7 +40,6 @@ class ProgressHUD: UIVisualEffectView {
         func setup() {
           contentView.addSubview(vibrancyView)
           contentView.addSubview(activityIndictor)
-//          contentView.addSubview(label)
           activityIndictor.startAnimating()
         }
 
@@ -50,31 +49,24 @@ class ProgressHUD: UIVisualEffectView {
 
           if let superview = self.superview {
 
-            let width = superview.frame.size.width / 9
-            let height: CGFloat = 35.0
-            self.frame = CGRect(x: superview.frame.size.width / 1.2 ,
-                                y: superview.frame.height / 9 - height / 2,
+            let width : CGFloat = 35
+            let height: CGFloat = 35
+            self.frame = CGRect(x: superview.frame.size.width / 1.22 ,
+                                y: superview.frame.height / 9 - height / 3.7,
                             width: width,
                             height: height)
             vibrancyView.frame = self.bounds
 
             let activityIndicatorSize: CGFloat = 40
-            activityIndictor.frame = CGRect(x: 5,
+            activityIndictor.frame = CGRect(x: 0,
                                             y: height / 2 - activityIndicatorSize / 2,
                                             width: activityIndicatorSize,
                                             height: activityIndicatorSize)
-            activityIndictor.color = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
+            activityIndictor.color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 
             layer.cornerRadius = 8.0
             layer.masksToBounds = true
-//            label.text = text
-//            label.textAlignment = NSTextAlignment.center
-//            label.frame = CGRect(x: activityIndicatorSize + 5,
-//                                 y: 0,
-//                                 width: width - activityIndicatorSize - 15,
-//                                 height: height)
-//            label.textColor = UIColor.white
-//            label.font = UIFont.boldSystemFont(ofSize: 15)
+
           }
         }
 

@@ -10,14 +10,14 @@ import UIKit
 
 class CityDailyWeatherTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate   {
 func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-   5
+    return dailyWeatherData.count
 }
 
 func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = self.dailyWeatherTableView.dequeueReusableCell(withIdentifier: "DailyWeatherTableCell", for: indexPath) as UITableViewCell
-    print("Data Reloaded 6")
     if let customCell = cell as? DailyWeatherTableCell
     {
+        print("data reloaded 5a ")
         customCell.dayDateAndMonthLabel.text = dailyWeatherData[indexPath.item].getWeekDay()
         customCell.min_MaxTempLabel.text = "\(dailyWeatherData[indexPath.item].getLowTemp())\u{00B0}/ \(dailyWeatherData[indexPath.item].getHighTemp())\u{00B0}"
         customCell.weatherImageView.image = dailyWeatherData[indexPath.item].getIcon()
@@ -33,7 +33,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     
@@ -43,7 +42,6 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
 
 }

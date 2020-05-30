@@ -21,6 +21,9 @@
 // SOFTWARE.
 
 
+// Not written by Ahmad Bin Laiq
+
+
 import Foundation
 import SystemConfiguration
 

@@ -18,7 +18,6 @@ class rootCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
     
     override init(){
-//        super.init()
         weatherModel = WeatherModel()
     }
     
@@ -36,10 +35,7 @@ class rootCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
             if let customCell = cell as? RootWeatherCollectionViewCell
             {
-    //            customCell.subRootTableView
-    //            customCell.subRootTableView.c
-                //print(weatherModel.getCurrentWeatherData())
-                print("Data Reloaded 2")
+                print("Data Reloaded 7")
                 customCell.weatherData = weatherModel
                 customCell.subRootTableView.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
                 customCell.subRootTableView.separatorStyle = .singleLine
@@ -47,11 +43,6 @@ class rootCollectionViewDataSource: NSObject, UICollectionViewDataSource {
                 customCell.subRootTableView.reloadData()
                 
             }
-            // displaying visible cell, in this case, the main page of our application
-//            for cell in collectionView.visibleCells{
-//                (cell as? RootWeatherCollectionViewCell)?.subRootTableView.reloadData()
-                
-//            }
             return cell
         }
     

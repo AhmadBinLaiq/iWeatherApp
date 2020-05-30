@@ -26,7 +26,6 @@ class CurrentWeatherHelperClass {
     private var wind : String = ""
     private var feelsLike : Float = 0.0
     private var pressure : String = ""
-//    private var visibilty : String = ""
     private var degree : String = ""
     private var weekDays = ["","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     init(){
@@ -68,30 +67,6 @@ class CurrentWeatherHelperClass {
         return temp
         
     }
-    
-    /*   returns the current time in hr:min from when callde */
-         open func getLocalTime() -> (Int,Int){
-             let date = NSDate()
-             let calender = NSCalendar.current
-             let components = calender.dateComponents([.hour, .minute], from: date as Date)
-             return (components.hour!,components.minute!)
-             
-         }
-    
-    func getLastUpdated() -> Int{
-        if getFetchTime() != "" {
-           let time = getFetchTime()
-           let ret = time.components(separatedBy: ":")
-            print("Time remaining: ",(Int(ret[1]))! - getLocalTime().1)
-           return (getLocalTime().1 - Int(ret[1])!)
-        }
-        else {
-            print("Called this one")
-        return 0
-        }
-              
-    }
-       
     
     func getFetchTime() -> String{
         print("Fetch Time is :::",fetchTime)
@@ -174,7 +149,6 @@ class CurrentWeatherHelperClass {
         formatter.dateFormat = "dd MMM yyyy HH:mm" //yyyy
         return formatter.string(from: date)
     }
-    
 }
 
 

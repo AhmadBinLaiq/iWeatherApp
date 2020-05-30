@@ -10,19 +10,7 @@ import UIKit
 
 class RootWeatherCollectionViewCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate  {
     
-//        override class func awakeFromNib() {
-//
-////            let refreshControl = UIRefreshControl()
-////                  refreshControl.addTarget(self, action: #selector(doSomething), for: .valueChanged)
-////
-////                  // this is the replacement of implementing: "collectionView.addSubview(refreshControl)"
-////
-////                  subRootTableView.refreshControl = refreshControl
-//
-////            subRootTableView.sectionHeaderHeight = 70
-////            self.view.addSubview(view)
-//        }
-    
+
     @IBOutlet weak var subRootTableView: UITableView!
     
     var currentWeatherDetails = [[String]]()
@@ -33,26 +21,7 @@ class RootWeatherCollectionViewCell: UICollectionViewCell, UITableViewDataSource
         return 6
     }
     
-    //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 70))
-    //
-    //        let label = UILabel()
-    //        label.frame = CGRect.init(x: headerView.frame.width/9, y: headerView.frame.height/5, width: headerView.frame.width, height: headerView.frame.height-20)
-    //        label.text = "Notification Times"
-    //        label.textColor = .white
-    //        label.textAlignment = .center
-    //        //        label.font = UIFont().futuraPTMediumFont(16) // my custom font
-    //        //        label.textColor = UIColor.charcolBlackColour() // my custom colour
-    //
-    //        headerView.addSubview(label)
-    //
-    //        return headerView
-    //    }
-    //
-    //    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    //        return 50
-    //    }
-    
+   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         var cell: UITableViewCell
@@ -64,12 +33,12 @@ class RootWeatherCollectionViewCell: UICollectionViewCell, UITableViewDataSource
             ["Humidity",weatherData.getCurrentWeatherData().getHumidity()+" %"],
             ["Pressure",(weatherData.getCurrentWeatherData().getPressure()+" pha")]
         ]
-        print("Data Reloaded 3")
         if indexPath.item == 0 {
             cell = self.subRootTableView.dequeueReusableCell(withIdentifier: "CurrentWeatherDetailTableCell", for: indexPath) as UITableViewCell
             if let customCell = cell as? CurrentWeatherDetailTableCell
             {
                 // change here.. .. add reload data lines
+                print("Data Reloaded 3")
                 customCell.currentWeatherData = weatherData.getCurrentWeatherData()
                 customCell.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
 //                tableView.headerView(forSection: 0)?.isHidden = true
@@ -80,10 +49,11 @@ class RootWeatherCollectionViewCell: UICollectionViewCell, UITableViewDataSource
             if let customCell = cell as? HourlyWeatherDetailTableCell
             {
                 
-//                customCell.hourlyWeatherCollectionView.reloadData()
+                print("Data Reloaded 4")
                 customCell.hourlyWeatherData = weatherData.getHourlyWeatherData()
+//                customCell.hourlyWeatherCollectionView.reloadData()
                 customCell.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
-//                customCell.hourlyWeatherCollectionView.reloadData() // chane 2
+                customCell.hourlyWeatherCollectionView.reloadData() // chane 2
                 
             }
         }
@@ -91,10 +61,11 @@ class RootWeatherCollectionViewCell: UICollectionViewCell, UITableViewDataSource
             cell = self.subRootTableView.dequeueReusableCell(withIdentifier: "CityDailyWeatherTableCell", for: indexPath) as UITableViewCell
             if let customCell = cell as? CityDailyWeatherTableCell
             {
-                
+                print("Data Reloaded 5")
+//                customCell.CityDailyWea
                 customCell.dailyWeatherData = weatherData.getDailyWeatherData()
-                customCell.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
-//                customCell.dailyWeatherTableView.reloadData() //change 1
+                customCell.backgroundColor = #colorLiteral(red: 0.5762809327, green: 0.3830275923, blue: 0.5050187108, alpha: 0.7786012414)
+                customCell.dailyWeatherTableView.reloadData() //change 1
                 
             }
         }
@@ -103,7 +74,7 @@ class RootWeatherCollectionViewCell: UICollectionViewCell, UITableViewDataSource
             cell = self.subRootTableView.dequeueReusableCell(withIdentifier: "simpleCurrentDetailTableCell", for: indexPath) as UITableViewCell
             if let customCell = cell as? simpleCurrentDetailTableCell
             {
-                
+                print("Data Reloaded 6")
                 let count  = indexPath.item - 3
                 customCell.title1st.text = currentWeatherDetails[indexPath.item-3+count][0] // 0,0
                 customCell.description1st.text = currentWeatherDetails[indexPath.item-3+count][1] // 0,1
