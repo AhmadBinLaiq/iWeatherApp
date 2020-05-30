@@ -79,7 +79,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     /* function that fetched data through model class  */
-    func fetchDataFromModel(refreshBool: Bool){
+    func fetchDataFromModel(refreshBool: Bool, completeonClosure:  ((Bool) -> ())? = nil){
         //        if refreshBool{
         //
         //        }
@@ -114,20 +114,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                     self.weatherModel.saveDateInDb()
                                     self.rootWeatherCollectionView.reloadData()
                                     self.rootWeatherCollectionView.refreshControl!.endRefreshing()
+                                    completeonClosure!(ifSucess)
                                 }
                         }
                         
                         print("leaving 2a(1)")
-                }, completion: {
-                    self.progressHUD.hide()
-                    let imageView = UIImageView(frame: CGRect(x: self.progressHUD.frame.minX, y: self.progressHUD.frame.minY, width: self.progressHUD.frame.width / 2 , height: self.progressHUD.frame.width / 2))
-                    imageView.image = UIImage(named: "greenCheck")
-                    self.view.addSubview(imageView)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                    {
-                        imageView.removeFromSuperview()
-                    }
-                })
+                }
+                 )
                 
             }
             if !refreshBool
@@ -160,7 +153,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.weatherModel = WeatherModel()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.weatherModel.context = appDelegate.persistentContainer.viewContext
-        let locationIcon = UIImageView(frame: CGRect(x: self.view.frame.minX + 15 , y: self.view.frame.minY  + 50 , width: self.view.frame.width / 12 , height: self.view.frame.width / 10 ))
+        let locationIcon = UIImageView(frame: CGRect(x: self.view.frame.minX + 15 , y: self.view.frame.minY  + 60 , width: self.view.frame.width / 13 , height: self.view.frame.width / 11 ))
         locationIcon.image = UIImage(named: "location")
         self.view.addSubview(locationIcon)
         let refreshControl = UIRefreshControl()
@@ -174,7 +167,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
         self.currentLocalTime = getLocalTime()
-        self.fetchDataFromModel(refreshBool: false)
+        self.fetchDataFromModel(refreshBool: false){
+            Sucess in
+            if Sucess{
+                self.progressHUD.hide()
+                let imageView = UIImageView(frame: CGRect(x: self.progressHUD.frame.minX, y: self.progressHUD.frame.minY, width: self.progressHUD.frame.width / 2 , height: self.progressHUD.frame.width / 2))
+                imageView.image = UIImage(named: "greenCheck")
+                self.view.addSubview(imageView)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                {
+                    imageView.removeFromSuperview()
+                }
+                
+            }
+        }
         print("Im back 5")
         self.locationManager = CLLocationManager()
         self.userLocation = CLLocation()

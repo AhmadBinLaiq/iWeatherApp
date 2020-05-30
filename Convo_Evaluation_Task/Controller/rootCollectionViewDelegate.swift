@@ -7,3 +7,21 @@
 //
 
 import Foundation
+import UIKit
+
+class rootCollectionViewDelegate : NSObject, UICollectionViewDelegate
+{
+    
+    override init(){
+        
+    }
+  
+    
+}
+
+
+extension rootCollectionViewDelegate: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 414, height: 818)
+    }
+}

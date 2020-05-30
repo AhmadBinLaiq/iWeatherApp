@@ -31,8 +31,8 @@ class WeatherModel {
     
     
     func saveDateInDb(){
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        context = appDelegate.persistentContainer.viewContext
+        //        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //        context = appDelegate.persistentContainer.viewContext
         
         saveCurrentWeatherDataInDb()
         saveHourlyWeatherDataInDb()
@@ -41,9 +41,9 @@ class WeatherModel {
     }
     
     func retriveDataFromDb(){
-//        clearPreviousLocalData()
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        context = appDelegate.persistentContainer.viewContext
+        //        clearPreviousLocalData()
+        //        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //        context = appDelegate.persistentContainer.viewContext
         retriveCurrentWeatherDataFromDb()
         retriveHourlyWeatherDataFromDb()
         retriveDailyWeatherDataFromDb()
@@ -63,19 +63,19 @@ class WeatherModel {
     
     
     func getHourlyWeatherData () -> [HourlyWeatherHelperClass] {
-//        self.hourlyWeather = self.hourlyWeather.sorted(by: { $0.getConsistancyIndex() < $1.getConsistancyIndex() })
+        //        self.hourlyWeather = self.hourlyWeather.sorted(by: { $0.getConsistancyIndex() < $1.getConsistancyIndex() })
         return self.hourlyWeather
     }
     
     
     func getDailyWeatherData () -> [DailyWeatherHelperClass] {
-//        self.dailyWeather = self.dailyWeather.sorted(by: { $0.getConsistancyIndex() < $1.getConsistancyIndex() })
+        //        self.dailyWeather = self.dailyWeather.sorted(by: { $0.getConsistancyIndex() < $1.getConsistancyIndex() })
         return self.dailyWeather
     }
     
     
     private func populateHourlyWeatherData(){
-        for index in 1...8 {
+        for index in 1...10 {
             let item = HourlyWeatherHelperClass(time: self.swiftyJsonVar["list"][index]["dt_txt"].stringValue, temperature: self.swiftyJsonVar["list"][index]["main"]["temp"].floatValue - 273.15, iconName: self.swiftyJsonVar["list"][index]["weather"][self.currentWeatherIndex]["icon"].stringValue)
             item.setNewValue(val: index)
             self.hourlyWeather.append(item)
@@ -109,17 +109,17 @@ class WeatherModel {
         }
         print(self.dailyWeather[3].getDailyData())
         let item = DailyWeatherHelperClass(weekday: (self.swiftyJsonVar["list"][39]["dt_txt"].stringValue), lowTemp: (self.swiftyJsonVar["list"][39]["main"]["temp_min"].floatValue - 273.15), highTemp: (self.swiftyJsonVar["list"][39]["main"]["temp_max"].floatValue - 273.15), iconName: self.swiftyJsonVar["list"][39]["weather"][self.currentWeatherIndex]["icon"].stringValue)
-//        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-//        print(item.getDailyData())
-//        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-
+        //        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        //        print(item.getDailyData())
+        //        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        
         item.setNewValue(val: 5)
         
         
         self.dailyWeather.append(item)
         print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         print(self.dailyWeather[4].getDailyData())
-             print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         
         item.changeWeekDate()
         
@@ -132,15 +132,15 @@ class WeatherModel {
         return ((Int(ret[0]))!,(Int(ret[1]))!)
     }
     
-//    func getLastUpdated() -> Int{
-//        let time = getFetchTime()
-//        let ret = time.components(separatedBy: ":")
-//        return (Int(ret[1]))! - getLocalTime().1
-//
-//       }
+    //    func getLastUpdated() -> Int{
+    //        let time = getFetchTime()
+    //        let ret = time.components(separatedBy: ":")
+    //        return (Int(ret[1]))! - getLocalTime().1
+    //
+    //       }
     
     func DeleteAllDataFromDb(){
-//        clearPreviousLocalData() // major change
+        //        clearPreviousLocalData() // major change
         var DelAllReqVar = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: "CurrentWeather"))
         do {
             try context.execute(DelAllReqVar)
@@ -166,13 +166,13 @@ class WeatherModel {
     
     
     /*   returns the current time in hr:min from when callde */
-       open func getLocalTime() -> (Int,Int){
-           let date = NSDate()
-           let calender = NSCalendar.current
-           let components = calender.dateComponents([.hour, .minute], from: date as Date)
-           return (components.hour!,components.minute!)
-           
-       }
+    open func getLocalTime() -> (Int,Int){
+        let date = NSDate()
+        let calender = NSCalendar.current
+        let components = calender.dateComponents([.hour, .minute], from: date as Date)
+        return (components.hour!,components.minute!)
+        
+    }
     
     private func populateCurrentWeatherData(){
         
@@ -184,9 +184,9 @@ class WeatherModel {
     }
     
     /* tells if the data should be refreshed or not, a minimum of 30 mins are limit to refresh the data */
-      static func shouldUpdateData(localTime: (hour: Int,min: Int), refreshTime: (hour: Int,min: Int)) -> Bool {
-          return (refreshTime.hour - localTime.hour) >= 1 || (refreshTime.min - localTime.min) >= 30
-      }
+    static func shouldUpdateData(localTime: (hour: Int,min: Int), refreshTime: (hour: Int,min: Int)) -> Bool {
+        return (refreshTime.hour - localTime.hour) >= 1 || (refreshTime.min - localTime.min) >= 30
+    }
     
     func clearPreviousLocalData(){
         self.currentWeather = CurrentWeatherHelperClass(fetchTimeF: "", cityF: "", weatherStatusF: "", temperatureF: 0.0, lowTempF: 0.0, highTempF: 0.0, weekDayF: "", sunRiseTimeF: "", sunSetTimeF: "", degreeF: "", humidityF: "", windF: "", feelsLikeF: 0.0, pressureF: "")
@@ -211,7 +211,7 @@ class WeatherModel {
     {
         let entity =  NSEntityDescription.entity(forEntityName: "CurrentWeather", in: context)
         let currentWeaterData = NSManagedObject(entity: entity!, insertInto: context)
-         currentWeaterData.setValue(currentWeather.getFetchTime(), forKey: "fetchTime")
+        currentWeaterData.setValue(currentWeather.getFetchTime(), forKey: "fetchTime")
         currentWeaterData.setValue(currentWeather.getCity(), forKey: "city")
         currentWeaterData.setValue(currentWeather.getDegree(), forKey: "degree")
         currentWeaterData.setValue(currentWeather.getFeelsLike(), forKey: "feelsLike")
@@ -284,7 +284,7 @@ class WeatherModel {
     
     private func setCurrentWeatherData(data: CurrentWeatherHelperClass){
         self.currentWeather = data
-//        print("1:::",self.currentWeather.getCurrentWeatherData())
+        //        print("1:::",self.currentWeather.getCurrentWeatherData())
         
         print(self.currentWeather.getCurrentWeatherData())
     }
@@ -304,11 +304,11 @@ class WeatherModel {
     private func setHourlyWeatherData(data: [HourlyWeatherHelperClass]){
         for index in data {
             self.hourlyWeather.append(index)
-           
+            
         }
         
         self.hourlyWeather = self.hourlyWeather.sorted(by: { $0.getConsistancyIndex() < $1.getConsistancyIndex() })
-        for i in 0...7{
+        for i in 0...9{
             print("Hourly data \(i)",self.hourlyWeather[i].getHourlyWeather())
         }
     }
@@ -348,7 +348,7 @@ class WeatherModel {
                 }
                 let temp = DailyWeatherHelperClass(weekday: data.value(forKey: "weekday") as! String, lowTemp: data.value(forKey: "lowTemp") as! Float, highTemp: data.value(forKey: "highTemp") as! Float,iconImage: receivedImage)
                 temp.setNewValue(val: data.value(forKey: "consistancyIndex") as! Int)
-                 print("-------------- Daily ----------",(data.value(forKey: "consistancyIndex") as! Int16))
+                print("-------------- Daily ----------",(data.value(forKey: "consistancyIndex") as! Int16))
                 print(data.value(forKey: "weekday") as! String)
                 tempArr.append(temp)
             }

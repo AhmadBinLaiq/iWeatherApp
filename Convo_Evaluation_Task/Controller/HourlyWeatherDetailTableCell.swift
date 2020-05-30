@@ -8,10 +8,11 @@
 
 import UIKit
 
-class HourlyWeatherDetailTableCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
+class HourlyWeatherDetailTableCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return hourlyWeatherData.count // change
+        print("Total cells in hour::",hourlyWeatherData.count)
+        return hourlyWeatherData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -29,25 +30,25 @@ class HourlyWeatherDetailTableCell: UITableViewCell, UICollectionViewDataSource,
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        return CGSize(width: self.hourlyWeatherCollectionView.frame.width/4 , height:  self.hourlyWeatherCollectionView.frame.height/6 )
-//       }
-//
-//
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1.0
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout
-//        collectionViewLayout: UICollectionViewLayout,
-//                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1.0
-//    }
-//
-//   
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        return CGSize(width: self.hourlyWeatherCollectionView.frame.width/4 , height:  self.hourlyWeatherCollectionView.frame.height/6 )
+       }
+
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout
+        collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
+
+   
     
     
     
