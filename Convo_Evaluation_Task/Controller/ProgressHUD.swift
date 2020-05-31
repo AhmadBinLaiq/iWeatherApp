@@ -22,13 +22,21 @@ class ProgressHUD: UIVisualEffectView {
 //        let label: UILabel = UILabel()
     let blurEffect = UIBlurEffect(style: .dark)
         let vibrancyView: UIVisualEffectView
+    var width : CGFloat = 0
+    var height: CGFloat = 0
 
-        init(text: String) {
+    init(text: String, width: CGFloat = 0, height: CGFloat = 0) {
+        self.width = width + width/2
+        self.height = height + height/2
           self.text = text
           self.vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect))
           super.init(effect: blurEffect)
           self.setup()
         }
+    
+//    init(){
+//
+//    }
 
         required init?(coder aDecoder: NSCoder) {
           self.text = ""
@@ -41,6 +49,7 @@ class ProgressHUD: UIVisualEffectView {
           contentView.addSubview(vibrancyView)
           contentView.addSubview(activityIndictor)
           activityIndictor.startAnimating()
+          
         }
 
         override func didMoveToSuperview()
@@ -49,8 +58,8 @@ class ProgressHUD: UIVisualEffectView {
 
           if let superview = self.superview {
 
-            let width : CGFloat = 35
-            let height: CGFloat = 35
+//            let width : CGFloat = 35
+//            let height: CGFloat = 35
             self.frame = CGRect(x: superview.frame.size.width / 1.22 ,
                                 y: superview.frame.height / 9 - height / 3.7,
                             width: width,

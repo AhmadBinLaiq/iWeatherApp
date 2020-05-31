@@ -22,7 +22,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var latitude: Double = 0.0 //
     var longitude: Double = 0.0
     var weatherModel = WeatherModel()
-    let progressHUD = ProgressHUD(text: "")
+    var progressHUD = ProgressHUD(text:"")
     var lastUpdatedLabel = UILabel()
     let vibrancyView =  UIVisualEffectView()
     var collectionViewDataSource = rootCollectionViewDataSource() /* data source class for root collection view */
@@ -128,9 +128,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     /* for adding a location managerIcon along with its target function  */
     func addLocationManagerIcon(){
-        let locationIcon = UIImageView(frame: CGRect(x: self.view.frame.minX + 15 , y: self.view.frame.minY  + 60 , width: self.view.frame.width / 13 , height: self.view.frame.width / 11 ))
-        locationIcon.image = UIImage(named: "location")
+        let locationIcon = UIButton(frame: CGRect(x: self.view.frame.minX + 15 , y: self.view.frame.minY  + 60 , width: self.view.frame.width / 13 , height: self.view.frame.width / 11 ))
+        locationIcon.imageView?.image = UIImage(named: "location")
+        locationIcon.addTarget(self, action: #selector(self.pressButton(_:)), for: .touchUpInside)
         self.view.addSubview(locationIcon)
+    }
+    
+    @objc func pressButton(_ sender: UIButton){
+        promptForAnswer()
+    }
+    
+    func promptForAnswer() {
+        let ac = UIAlertController(title: "Enter city name ", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
+            let answer = ac.textFields![0]
+            // do something interesting with "answer" here
+        }
+
+        ac.addAction(submitAction)
+
+        present(ac, animated: true)
     }
     
     /* for adding a green check when data is fetched initially */
@@ -172,13 +191,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.rootWeatherCollectionView.backgroundColor = #colorLiteral(red: 0.3616552982, green: 0.2405221771, blue: 0.3134187302, alpha: 0.7786012414)
-        DispatchQueue.main.async {
-            self.rootWeatherCollectionView.collectionViewLayout.invalidateLayout()
-        }
+//        DispatchQueue.main.async {
+//            self.rootWeatherCollectionView.collectionViewLayout.invalidateLayout()
+//        }
+//        progressHUD = ProgressHUD(text: "",width: self.view.frame.width,height: self.view.frame.height)
         self.weatherModel = WeatherModel()
-        self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
-        self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
-        self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
+        
+//        self.collectionViewDataSource = rootCollectionViewDataSource(weatherModelT: self.weatherModel)
+//        self.rootWeatherCollectionView.delegate = (self.collectionViewDelegate)
+//        self.rootWeatherCollectionView.dataSource = (self.collectionViewDataSource)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.weatherModel.context = appDelegate.persistentContainer.viewContext
         self.addUIView()

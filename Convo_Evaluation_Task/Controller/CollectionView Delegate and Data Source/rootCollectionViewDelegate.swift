@@ -11,17 +11,30 @@ import UIKit
 
 class rootCollectionViewDelegate : NSObject, UICollectionViewDelegate
 {
-    
+    var width = CGFloat(0.0)
+    var height = CGFloat(0.0)
+    init(viewWidth: CGFloat, viewHeight: CGFloat){
+     width = viewWidth
+        height = viewHeight
+    }
     override init(){
         
     }
+//    
+//     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+////         let height = height
+////         let width = width
+//         // in case you you want the cell to be 40% of your controllers view
+//         return CGSize(width: width, height: height)
+//     }
   
     
 }
 
 
-extension rootCollectionViewDelegate: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 414, height: 818)
-    }
-}
+//extension rootCollectionViewDelegate: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: 414, height: 818)
+//    }
+//}
